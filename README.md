@@ -1,85 +1,93 @@
-# Data Warehouse and Analytics Project
+# 🏢 Enterprise SQL Data Warehouse (Medallion Architecture)
 
-Welcome to the **Data Warehouse and Analytics Project** repository! 🚀  
-This project demonstrates a comprehensive data warehousing and analytics solution, from building a data warehouse to generating actionable insights. Designed as a portfolio project, it highlights industry best practices in data engineering and analytics.
+![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)
+![Data Architecture](https://img.shields.io/badge/Architecture-Medallion-FFB000?style=for-the-badge)
+![Data Engineering](https://img.shields.io/badge/Data_Engineering-End_to_End-0078D4?style=for-the-badge)
 
+## 📌 Project Overview
+This project is an end-to-end **Data Warehouse** built from scratch using **Microsoft SQL Server**. It integrates fragmented data from two distinct source systems (**CRM** and **ERP**) into a centralized repository using the industry-standard **Medallion Architecture** (Bronze, Silver, Gold). 
 
----
-## 📖 Project Overview
-
-This project involves:
-
-1. **Data Architecture**: Designing a Modern Data Warehouse Using Medallion Architecture **Bronze**, **Silver**, and **Gold** layers.
-2. **ETL Pipelines**: Extracting, transforming, and loading data from source systems into the warehouse.
-3. **Data Modeling**: Developing fact and dimension tables optimized for analytical queries.
-4. **Analytics & Reporting**: Creating SQL-based reports and dashboards for actionable insights.
-
+The goal of this project is to transform raw, inconsistent transactional data into a highly structured, business-ready **Star Schema** to empower BI tools and data analysts.
 
 ---
 
-## 🚀 Project Requirements
+## 🏗️ Architecture Design (Medallion Architecture)
 
-### Building the Data Warehouse (Data Engineering)
+The data pipeline follows a strict 3-tier architecture:
 
-#### Objective
-Develop a modern data warehouse using SQL Server to consolidate sales data, enabling analytical reporting and informed decision-making.
+### 🥉 1. Bronze Layer (Raw Data)
+- Acts as the landing zone for raw data extracted from source systems.
+- Data is stored exactly as it arrives without any transformations.
+- Loaded using `BULK INSERT` from CSV files.
+- **Sources Integrated:**
+  - `crm_sales_details`, `crm_cust_info`, `crm_prd_info` (CRM System)
+  - `erp_px_cat_g1v2`, `erp_cust_az12`, `erp_loc_a101` (ERP System)
 
-#### Specifications
-- **Data Sources**: Import data from two source systems (ERP and CRM) provided as CSV files.
-- **Data Quality**: Cleanse and resolve data quality issues prior to analysis.
-- **Integration**: Combine both sources into a single, user-friendly data model designed for analytical queries.
-- **Scope**: Focus on the latest dataset only; historization of data is not required.
-- **Documentation**: Provide clear documentation of the data model to support both business stakeholders and analytics teams.
+### 🥈 2. Silver Layer (Cleansed & Conformed Data)
+- Data is extracted from the Bronze layer, cleansed, and standardized.
+- **Transformations applied:**
+  - Handling `NULL` values and standardizing data formats (e.g., mapping marital status and gender).
+  - Normalizing text fields (e.g., removing prefixes, handling unwanted spaces).
+  - Resolving schema mismatches between CRM and ERP data.
+  - Recalculating missing or invalid metrics (e.g., Sales = Quantity * Price).
+  - Deduplication and handling historical data boundaries (Start/End dates).
+- Automated via Stored Procedures (`EXEC silver.load_silver`).
+- Validated with robust quality checks.
+
+### 🥇 3. Gold Layer (Business & Reporting Data)
+- The final presentation layer optimized for reporting and analytics.
+- Modeled using **Star Schema** (Dimension and Fact tables):
+  - `dim_customers`: Unified customer profiles combining CRM and ERP demographics.
+  - `dim_products`: Unified product hierarchy combining CRM product details with ERP category data.
+  - `fact_sales`: Transactional sales measures.
+- Built using SQL `VIEWS` to provide real-time access to the cleansed Silver data.
+- Includes advanced business views (`report_customers`, `report_products`) to calculate KPIs like Customer Lifetime Value (CLV), Recency, and Average Order Value.
 
 ---
 
-### BI: Analytics & Reporting (Data Analysis)
+## 📂 Project Structure
 
-#### Objective
-Develop SQL-based analytics to deliver detailed insights into:
-- **Customer Behavior**
-- **Product Performance**
-- **Sales Trends**
-
-These insights empower stakeholders with key business metrics, enabling strategic decision-making.  
-
-## 📂 Repository Structure
+```text
+📦 sql-data-warehouse-project
+ ┣ 📂 scripts
+ ┃ ┣ 📂 bronze          # DDL and ingestion scripts (BULK INSERT)
+ ┃ ┣ 📂 silver          # Cleansing logic and ETL Stored Procedures
+ ┃ ┗ 📂 gold            # Star schema views (Dimensions, Facts, and Reports)
+ ┣ 📂 tests
+ ┃ ┣ 📜 quality_checks_silver.sql  # SQL scripts for data standardizing & anomaly detection
+ ┃ ┗ 📜 quality_checks_gold.sql    # SQL scripts to validate referential integrity
+ ┣ 📂 diagrams
+ ┃ ┗ 📜 ER_Diagram.png             # Entity-Relationship diagram mapping CRM/ERP
+ ┗ 📜 README.md                    # Project documentation
 ```
-data-warehouse-project/
-│
-├── datasets/                           # Raw datasets used for the project (ERP and CRM data)
-│
-├── docs/                               # Project documentation and architecture details
-│   ├── data_integration.drawio         # Draw.io file illustrating the entity mapping and join logic between CRM and ERP source tables
-│   ├── data_catalog.md                 # Catalog of datasets, including field descriptions and metadata
-│   ├── data_flow.drawio                # Draw.io file for the data flow diagram
-│   ├── data_models.drawio              # Draw.io file for data models (star schema)
-│   ├── naming-conventions.md           # Consistent naming guidelines for tables, columns, and files
-│
-├── scripts/                            # SQL scripts for ETL and transformations
-│   ├── bronze/                         # Scripts for extracting and loading raw data
-│   ├── silver/                         # Scripts for cleaning and transforming data
-│   ├── gold/                           # Scripts for creating analytical models
-│
-├── tests/                              # Test scripts and quality files
-│   ├── quality_checks_gold
-|   ├── quality_checks_silver
-|
-├── README.md                           # Project overview and instructions
-├── LICENSE                             # License information for the repository
-├── .gitignore                          # Files and directories to be ignored by Git
-└── requirements.txt                    # Dependencies and requirements for the project
-```
----
-
-
 
 ---
 
-## 🛡️ License
+## ⚙️ Key Technologies & Skills Demonstrated
+- **Database:** Microsoft SQL Server (T-SQL)
+- **Data Modeling:** Star Schema, Dimensional Modeling, Medallion Architecture.
+- **Data Integration:** ETL/ELT pipelines using Stored Procedures and `BULK INSERT`.
+- **Data Quality:** Automated QA scripts to test referential integrity, null constraints, and business logic.
+- **Analytics:** Window functions and complex aggregations for KPI calculation.
 
-This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and share this project with proper attribution.
+---
 
-## 🌟 About Me
+## 🚀 How to Run the Project
 
+1. **Database Setup:** 
+   Run the setup script to create the `DataWarehouse` database and schemas (`bronze`, `silver`, `gold`).
+2. **Load Bronze Data:** 
+   Run the DDL script to create bronze tables, then execute `EXEC bronze.load_bronze` to bulk load data from CSV files.
+3. **Execute Silver Pipeline:** 
+   Run the DDL script for silver tables, then execute `EXEC silver.load_silver` to cleanse and transform the data.
+4. **Deploy Gold Views:** 
+   Execute the scripts in the `gold` folder to create the dimensional models and reporting views.
+5. **Run Tests:** 
+   Verify data integrity by running the scripts in the `tests/` directory.
 
+---
+
+## 🔮 Future Enhancements (Roadmap)
+- [ ] **CI/CD Pipeline:** Implement GitHub Actions to automate SQL Linting and deployment of Stored Procedures/Views.
+- [ ] **Data Orchestration:** Schedule pipeline execution using tools like Apache Airflow or SQL Server Agent.
+- [ ] **Cloud Migration:** Migrate the architecture to **Microsoft Fabric / Azure Synapse Analytics** utilizing PySpark.
