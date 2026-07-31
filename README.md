@@ -3,11 +3,12 @@
 ![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)
 ![Data Architecture](https://img.shields.io/badge/Architecture-Medallion-FFB000?style=for-the-badge)
 ![Data Engineering](https://img.shields.io/badge/Data_Engineering-End_to_End-0078D4?style=for-the-badge)
+![Data Analytics](https://img.shields.io/badge/Data_Analytics-Business_Insights-107C10?style=for-the-badge)
 
 ## 📌 Project Overview
 This project is an end-to-end **Data Warehouse** built from scratch using **Microsoft SQL Server**. It integrates fragmented data from two distinct source systems (**CRM** and **ERP**) into a centralized repository using the industry-standard **Medallion Architecture** (Bronze, Silver, Gold). 
 
-The goal of this project is to transform raw, inconsistent transactional data into a highly structured, business-ready **Star Schema** to empower BI tools and data analysts.
+The goal of this project is to transform raw, inconsistent transactional data into a highly structured, business-ready **Star Schema** to empower BI tools and perform advanced data analysis.
 
 ---
 
@@ -41,7 +42,21 @@ The data pipeline follows a strict 3-tier architecture:
   - `dim_products`: Unified product hierarchy combining CRM product details with ERP category data.
   - `fact_sales`: Transactional sales measures.
 - Built using SQL `VIEWS` to provide real-time access to the cleansed Silver data.
-- Includes advanced business views (`report_customers`, `report_products`) to calculate KPIs like Customer Lifetime Value (CLV), Recency, and Average Order Value.
+
+---
+
+## 📊 Data Analysis & Business Reporting
+
+Beyond data engineering, this project includes an analytical layer built directly into the Gold schema. Using complex SQL aggregations and Window Functions, I created comprehensive business reports to generate actionable insights:
+
+- **Customer Analytics (`report_customers`):** 
+  - Segments customers into categories (e.g., VIP, Regular, New) based on spending and lifespan.
+  - Groups customers by age demographics.
+  - Calculates key metrics such as **Recency** (months since last order), **Average Order Value (AOV)**, and **Average Monthly Spend**.
+  
+- **Product Performance (`report_products`):**
+  - Segments products by revenue to identify High-Performers, Mid-Range, and Low-Performers.
+  - Tracks product lifespan and calculates **Average Order Revenue (AOR)** and **Average Monthly Revenue**.
 
 ---
 
@@ -68,7 +83,7 @@ The data pipeline follows a strict 3-tier architecture:
 - **Data Modeling:** Star Schema, Dimensional Modeling, Medallion Architecture.
 - **Data Integration:** ETL/ELT pipelines using Stored Procedures and `BULK INSERT`.
 - **Data Quality:** Automated QA scripts to test referential integrity, null constraints, and business logic.
-- **Analytics:** Window functions and complex aggregations for KPI calculation.
+- **Data Analytics:** Advanced SQL aggregations, Customer Segmentation, and KPI calculation.
 
 ---
 
@@ -80,8 +95,8 @@ The data pipeline follows a strict 3-tier architecture:
    Run the DDL script to create bronze tables, then execute `EXEC bronze.load_bronze` to bulk load data from CSV files.
 3. **Execute Silver Pipeline:** 
    Run the DDL script for silver tables, then execute `EXEC silver.load_silver` to cleanse and transform the data.
-4. **Deploy Gold Views:** 
-   Execute the scripts in the `gold` folder to create the dimensional models and reporting views.
+4. **Deploy Gold Views & Reports:** 
+   Execute the scripts in the `gold` folder to create the dimensional models and the business reporting views.
 5. **Run Tests:** 
    Verify data integrity by running the scripts in the `tests/` directory.
 
@@ -91,7 +106,6 @@ The data pipeline follows a strict 3-tier architecture:
 - [ ] **CI/CD Pipeline:** Implement GitHub Actions to automate SQL Linting and deployment of Stored Procedures/Views.
 - [ ] **Data Orchestration:** Schedule pipeline execution using tools like Apache Airflow or SQL Server Agent.
 - [ ] **Cloud Migration:** Migrate the architecture to **Microsoft Fabric / Azure Synapse Analytics** utilizing PySpark.
-
 ---
 
 ## 👨‍💻 About Me
