@@ -64,16 +64,24 @@ Beyond data engineering, this project includes an analytical layer built directl
 
 ```text
 📦 sql-data-warehouse-project
+ ┣ 📂 datasets            # Raw source files (.csv)
+ ┃ ┣ 📂 source_crm
+ ┃ ┗ 📂 source_erp
+ ┣ 📂 docs                # Project documentation and diagrams
+ ┃ ┣ 📜 data_catalog.md
+ ┃ ┣ 📜 data_flow.png
+ ┃ ┣ 📜 data_integration.png
+ ┃ ┣ 📜 data_model.png
+ ┃ ┗ 📜 naming_conventions.md
  ┣ 📂 scripts
- ┃ ┣ 📂 bronze          # DDL and ingestion scripts (BULK INSERT)
- ┃ ┣ 📂 silver          # Cleansing logic and ETL Stored Procedures
- ┃ ┗ 📂 gold            # Star schema views (Dimensions, Facts, and Reports)
+ ┃ ┣ 📂 bronze            # DDL and ingestion scripts (BULK INSERT)
+ ┃ ┣ 📂 silver            # Cleansing logic and ETL Stored Procedures
+ ┃ ┗ 📂 gold              # Star schema views (Dimensions, Facts, and Reports)
  ┣ 📂 tests
  ┃ ┣ 📜 quality_checks_silver.sql  # SQL scripts for data standardizing & anomaly detection
  ┃ ┗ 📜 quality_checks_gold.sql    # SQL scripts to validate referential integrity
- ┣ 📂 diagrams
- ┃ ┗ 📜 ER_Diagram.png             # Entity-Relationship diagram mapping CRM/ERP
- ┗ 📜 README.md                    # Project documentation
+ ┣ 📜 LICENSE
+ ┗ 📜 README.md           # Project documentation
 ```
 
 ---
