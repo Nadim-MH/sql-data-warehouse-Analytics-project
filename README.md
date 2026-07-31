@@ -68,6 +68,7 @@ Beyond data engineering, this project includes an analytical layer built directl
  ┃ ┣ 📂 source_crm
  ┃ ┗ 📂 source_erp
  ┣ 📂 docs                # Project documentation and diagrams
+ ┃ ┣ 📜 data_architecture.png
  ┃ ┣ 📜 data_catalog.md
  ┃ ┣ 📜 data_flow.png
  ┃ ┣ 📜 data_integration.png
